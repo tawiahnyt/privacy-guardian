@@ -1,0 +1,284 @@
+<!-- @format -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Privacy Guardian</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        width: 320px;
+        margin: 0;
+        padding: 0;
+        color: #333;
+      }
+      .container {
+        padding: 15px;
+      }
+      header {
+        background-color: #4a6fa5;
+        color: white;
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      h1 {
+        font-size: 18px;
+        margin: 0;
+      }
+      .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 24px;
+      }
+      .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        transition: 0.4s;
+        border-radius: 24px;
+      }
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+      input:checked + .slider {
+        background-color: #2ecc71;
+      }
+      input:checked + .slider:before {
+        transform: translateX(26px);
+      }
+      .stats {
+        margin-top: 15px;
+        background-color: #f5f5f5;
+        padding: 15px;
+        border-radius: 5px;
+      }
+      .stats-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .stats-header h2 {
+        font-size: 16px;
+        margin: 0;
+      }
+      .reset-btn {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 12px;
+      }
+      .reset-btn:hover {
+        background-color: #c0392b;
+      }
+      .tracker-list {
+        max-height: 200px;
+        overflow-y: auto;
+        margin-top: 10px;
+      }
+      .tracker-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid #ddd;
+      }
+      .tracker-item:last-child {
+        border-bottom: none;
+      }
+      .settings {
+        margin-top: 15px;
+      }
+      .settings h2 {
+        font-size: 16px;
+        margin: 0 0 10px 0;
+      }
+      .setting-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .custom-rules {
+        margin-top: 15px;
+      }
+      .custom-rules h2 {
+        font-size: 16px;
+        margin: 0 0 10px 0;
+      }
+      .add-rule {
+        display: flex;
+        margin-bottom: 10px;
+      }
+      .add-rule input {
+        flex-grow: 1;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        margin-right: 5px;
+      }
+      .add-rule button {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      .add-rule button:hover {
+        background-color: #2980b9;
+      }
+      .rule-list {
+        max-height: 150px;
+        overflow-y: auto;
+      }
+      .rule-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid #ddd;
+      }
+      .rule-item:last-child {
+        border-bottom: none;
+      }
+      .rule-item button {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        padding: 3px 8px;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 12px;
+      }
+      .rule-item button:hover {
+        background-color: #c0392b;
+      }
+      .tabs {
+        display: flex;
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 15px;
+      }
+      .tab {
+        padding: 10px 15px;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+      }
+      .tab.active {
+        border-bottom: 2px solid #4a6fa5;
+        font-weight: bold;
+      }
+      .tab-content {
+        display: none;
+      }
+      .tab-content.active {
+        display: block;
+      }
+      .total-blocked {
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        margin: 15px 0;
+        color: #4a6fa5;
+      }
+      .no-trackers {
+        text-align: center;
+        color: #7f8c8d;
+        padding: 20px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Privacy Guardian</h1>
+      <label class="toggle-switch">
+        <input type="checkbox" id="enableToggle" checked />
+        <span class="slider"></span>
+      </label>
+    </header>
+
+    <div class="container">
+      <div class="tabs">
+        <div class="tab active" data-tab="stats">Statistics</div>
+        <div class="tab" data-tab="settings">Settings</div>
+        <div class="tab" data-tab="rules">Custom Rules</div>
+      </div>
+
+      <div id="statsTab" class="tab-content active">
+        <div class="total-blocked">
+          <span id="totalBlocked">0</span> Trackers Blocked
+        </div>
+
+        <div class="stats">
+          <div class="stats-header">
+            <h2>Blocked Trackers</h2>
+            <button class="reset-btn" id="resetStats">Reset Stats</button>
+          </div>
+
+          <div id="trackerList" class="tracker-list">
+            <div class="no-trackers">No trackers blocked yet</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="settingsTab" class="tab-content">
+        <div class="settings">
+          <h2>Extension Settings</h2>
+
+          <div class="setting-item">
+            <span>Show notifications</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="notificationsToggle" />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div id="rulesTab" class="tab-content">
+        <div class="custom-rules">
+          <h2>Add Custom Rule</h2>
+
+          <div class="add-rule">
+            <input
+              type="text"
+              id="domainInput"
+              placeholder="Enter domain (e.g., example.com)"
+            />
+            <button id="addRule">Block</button>
+          </div>
+
+          <div id="ruleList" class="rule-list">
+            <!-- Custom rules will be added here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
