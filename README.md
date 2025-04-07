@@ -2,12 +2,14 @@
 
 # Privacy Guardian Browser Extension
 
-Privacy Guardian is a browser extension that intercepts network requests and blocks or modifies requests to known trackers before they load. It's designed to protect your privacy while browsing the web without affecting page load speed.
+Privacy Guardian is a browser extension that intercepts network requests and blocks or modifies requests to known trackers and malicious URLs before they load. It's designed to protect your privacy and security while browsing the web without affecting page load speed.
 
 ## Features
 
 - Blocks requests to known tracking domains
-- Maintains statistics on blocked trackers
+- Blocks requests to malicious URLs (phishing, malware, scams)
+- Maintains detailed statistics on blocked content by category
+- Separate controls for tracker and malicious URL blocking
 - Customizable blocking rules
 - Minimal impact on browsing performance
 - Simple, user-friendly interface

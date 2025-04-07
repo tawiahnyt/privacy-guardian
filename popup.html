@@ -101,11 +101,25 @@
         overflow-y: auto;
         margin-top: 10px;
       }
-      .tracker-item {
+      .tracker-item, .malicious-item, .category-item {
         display: flex;
         justify-content: space-between;
-        padding: 8px 0;
+        padding: 5px 0;
         border-bottom: 1px solid #ddd;
+      }
+      
+      .category-summary, .trackers-section, .malicious-section {
+        margin-bottom: 15px;
+      }
+      
+      .category-summary h3, .trackers-section h3, .malicious-section h3 {
+        font-size: 14px;
+        margin: 10px 0 5px 0;
+        color: #4a6fa5;
+      }
+      
+      .malicious-item {
+        color: #e74c3c;
       }
       .tracker-item:last-child {
         border-bottom: none;
@@ -250,11 +264,39 @@
           <h2>Extension Settings</h2>
 
           <div class="setting-item">
+            <span>Block trackers</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="blockTrackersToggle" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="setting-item">
+            <span>Block malicious URLs</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="blockMaliciousToggle" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="setting-item">
             <span>Show notifications</span>
             <label class="toggle-switch">
               <input type="checkbox" id="notificationsToggle" />
               <span class="slider"></span>
             </label>
+          </div>
+          <div class="setting-item">
+            <span>Use heuristic detection</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="heuristicToggle" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="setting-item">
+            <span>Heuristic sensitivity</span>
+            <div style="display: flex; align-items: center; width: 150px;">
+              <input type="range" id="sensitivitySlider" min="0" max="100" value="70" style="width: 100px;" />
+              <span id="sensitivityValue" style="margin-left: 10px;">70</span>
+            </div>
           </div>
         </div>
       </div>
